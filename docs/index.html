@@ -220,6 +220,12 @@
             margin-top: var(--halfGap);
             transform: scale(0.8,0.8);
         }
+
+        .header-title {
+            font-size: 1.7em; 
+            font-weight: bold; 
+            line-height: 1em;
+        }
     </style>
 </head>
 
@@ -255,7 +261,7 @@
     </div>
     <header>
         <wired-card class="mv-bar">
-            <span style="font-size: 1.7em; font-weight: bold; line-height: 1em;">Prototype Activity Mapping</span>
+            <span class="header-title">Prototype Activity Mapping</span>
             <wired-button class="toolbar-btn mv-edit">edit</wired-button>
             <wired-button class="toolbar-btn mv-save">save</wired-button>
             <wired-button class="toolbar-btn mv-export">export</wired-button>
@@ -304,7 +310,7 @@
                             </div>
                             <wired-radio text="Show testable conditions"></wired-radio>
                             <div class="conditions">
-                                <div property class="condition" mv-multiple mv-default="given, when, then">
+                                <div property class="condition" mv-multiple>
                                     <span class="card-property-editor card-property-editor--enum" property="conditionttype" mv-edit="#operation-conditiontypes"></span>
                                     <span class="card-property-editor" property="criteria"></span>
                                 </div>
