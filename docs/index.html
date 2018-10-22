@@ -2,25 +2,80 @@
 <html lang="en">
 
 <head>
-    <link rel="preload" href="https://get.mavo.io/mavo.css" as="style">
+    <link rel="preload" href="./mavo.css" as="style">
     <link rel="preload" href="https://fonts.googleapis.com/css?family=Architects+Daughter" as="style">
-    <link rel="preload" href="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js" as="script">
-    <link rel="preload" href="https://get.mavo.io/mavo.js" as="script">
+    <link rel="preload" href="./wired-elements.bundled.min.js" as="script">
+    <link rel="preload" href="./mavo.min.js" as="script">
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="https://get.mavo.io/mavo.css" />
+
+    <link rel="stylesheet" href="./mavo.css" />
     <link href="https://fonts.googleapis.com/css?family=Architects+Daughter" rel="stylesheet">
-    <script src="https://get.mavo.io/mavo.js"></script>
+    <script id="initSource" type="text/plain">{
+        "activity": [
+            {
+                "label": "Plan assignments",
+                "role": "teacher",
+                "intenttype": "want-to",
+                "activity_verbal": "plan assignments",
+                "motive": "the students get something to do",
+                "action": [
+                    {
+                        "intenttype": "need-to",
+                        "action_verbal": "start the program",
+                        "goal": "I can get access to tools",
+                        "operation": [
+                            {
+                                "intenttype": "must",
+                                "operation_verbal": "log on",
+                                "condition": [
+                                    {
+                                        "conditionttype": "given",
+                                        "criteria": "I have an account"
+                                    },
+                                    {
+                                        "conditionttype": "when",
+                                        "criteria": "I go to log in"
+                                    },
+                                    {
+                                        "conditionttype": "and",
+                                        "criteria": "fill in user name in user name-field"
+                                    },
+                                    {
+                                        "conditionttype": "and",
+                                        "criteria": "fill in password in password field"
+                                    },
+                                    {
+                                        "conditionttype": "and",
+                                        "criteria": "click submit"
+                                    },
+                                    {
+                                        "conditionttype": "then",
+                                        "criteria": "I should be redirected to dashboard"
+                                    }
+                                ],
+                                "format": "In order to '{action_verbal}' I {intenttype} {operation_verbal}."
+                            }
+                        ],
+                        "format": "As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}."
+                    }
+                ],
+                "format": "As a/an {role} I {intenttype} {activity_verbal} so {motive}.",
+                "test": "As a/an {role} I {intenttype} fdf {activity_verbal} so {motive}."
+            }
+        ]
+    }</script>
+    <script src="./mavo.min.js"></script>
     <title>Prototype Activity Mapping</title>
-    <script src="https://unpkg.com/wired-elements@latest/dist/wired-elements.bundled.min.js"></script>
     <style>
         :root {
             font-family: 'Architects Daughter', cursive;
             font-size: 18px;
             --gap: 18px;
             --halfGap: calc(var(--gap) / 2);
+            --doubleGap: calc(var(--gap) * 2);
             --mainOffset: 5em;
         }
 
@@ -47,18 +102,28 @@
             width: 100%;
         }
 
-        main {
-            overflow: scroll;
-            height: calc(100% - var(--mainOffset) - var(--gap));
-            width: 100%;
-            margin-top: var(--gap);
-            z-index: 1;
-        }
-
         header {
             height: var(--mainOffset);
             padding: var(--gap);
+            padding-bottom: 0;
             z-index: 0;
+        }
+
+        main {
+            overflow: scroll;
+            height: calc(100% - var(--mainOffset) - var(--doubleGap));
+            width: 100%;
+            margin-top: 0;
+            z-index: 1;
+        }
+
+        .toolbar-radio{
+            height: 2em;
+            margin-left: var(--gap);
+        }
+
+        .toolbar-radio wired-radio {
+            margin: 0;
         }
 
         .mv-bar {
@@ -117,8 +182,16 @@
             font-weight: bold;
         }
 
-        .card-property-editor {
+        [property='conditionttype'] {
+            text-decoration: underline;
+        }
+
+        [mv-mode='edit'] .card-property-editor {
             background-color: aliceblue;
+        }
+
+        [mv-app][mv-mode="edit"] .mv-empty, [mv-app] [mv-mode="edit"] .mv-empty {
+            opacity: 1;
         }
 
         [mv-mode='edit'] .card-property-editor--enum:after {
@@ -226,15 +299,36 @@
             font-weight: bold; 
             line-height: 1em;
         }
+
+        [selected='activities-only']~main .action{
+            display: none;
+        }
+
+        [selected='activities-only']~main .mv-add-action{
+            display: none;
+        }
+
+        [selected='activities-and-actions']~main .operation{
+            display: none;
+        }
+
+        [selected='activities-and-actions']~main .mv-add-operation{
+            display: none;
+        }
     </style>
 </head>
 
-<body mv-app="ActivityMap" mv-storage="local">
+<body mv-app="ActivityMap" mv-storage="#initSource">
     <div hidden>
         <select id="roles">
             <option value="student">student</option>
             <option value="teacher">teacher</option>
             <option value="editor">editor</option>
+        </select>
+        <select id="levels">
+            <option value="all">all</option>
+            <option value="activities-only">activities only</option>
+            <option value="activities-and-actions">activities and actions</option>
         </select>
         <select id="activity-intenttypes">
             <option value="want-to">want to</option>
@@ -267,14 +361,21 @@
             <wired-button class="toolbar-btn mv-export">export</wired-button>
         </wired-card>
     </header>
+    
+    <wired-radio-group class="toolbar-radio" selected="all">
+        Show
+        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="all" text="all"></wired-radio>
+        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-only" text="activities only"></wired-radio>
+        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-and-actions" text="activities and actions"></wired-radio>
+    </wired-radio-group>
     <main>
         <div class="activities">
             <div class="activity" property mv-multiple>
-                <meta property name="activityid" content="[$index + 1]" hidden>
-                <meta property name="summary" content="As a/an [role] I [intenttype] [activity_verbal] so [motive]." hidden>
-                <wired-card class="card card--activity">
-                    <div class="card-index">Activity: [activityid]</div>
-                    <div property="label" class="card-label"></div>
+                <meta property name="activityid" content="[$index + 1]">
+                <meta mv-mode="read" property name="format" content="As a/an {role} I {intenttype} {activity_verbal} so {motive}.">
+                <wired-card onclick="this.updated()" class="card card--activity">
+                    <div class="card-index"><span class="card-role">[role]</span>Activity: [activityid]</div>
+                    <div property="label" class="card-property-editor card-label"></div>
                     <div class="card-description">As a/an
                         <span class="card-property-editor card-property-editor--enum" property="role" mv-edit="#roles"></span>
                         I
@@ -285,22 +386,22 @@
                     </div>
                 </wired-card>
                 <div class="action" property mv-multiple>
-                    <meta property name="actionid" content="[activityid].[$index + 1]" hidden>
-                    <meta property name="summary" content="As part of '[activity_verbal]', I [intenttype] [action_verbal] so [goal]." hidden>
-                    <wired-card class="card card--action">
+                    <meta property name="actionid" content="[activityid].[$index + 1]">
+                    <meta mv-mode="read" property name="format" content="As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}.">
+                    <wired-card onclick="this.updated()" class="card card--action">
                         <div class="card-index"><span class="card-role">[role]</span>Action: [actionid]</div>
                         <div class="card-description">As part of 
                             "<span>[activity_verbal]</span>", I
                             <span class="card-property-editor card-property-editor--enum" property="intenttype" mv-edit="#action-intenttypes"></span>
-                            <span class="card-property-editor" property="action_verbal"></span> so
+                            <span class="card-property-editor" property="action_verbal"></span> so/to
                             <span class="card-property-editor" property="goal"></span>
                             .
                         </div>
                     </wired-card>
                     <div class="operation" property mv-multiple>
-                        <meta property name="operationid" content="[actionid].[$index + 1]" hidden>
-                        <meta property name="summary" content="In order to '[action_verbal]' I [intenttype] [operation_verbal]." hidden>
-                        <wired-card onclick="this.requestRender()" class="card card--operation">
+                        <meta property name="operationid" content="[actionid].[$index + 1]">
+                        <meta mv-mode="read" property name="format" content="In order to '{action_verbal}' I {intenttype} {operation_verbal}.">
+                        <wired-card onclick="this.updated()" class="card card--operation">
                             <div class="card-index"><span class="card-role">[role]</span>Operation: [operationid]</div>
                             <div class="card-description">In order to 
                                 "<span>[action_verbal]</span>", I
@@ -321,6 +422,8 @@
             </div>
         </div>
     </main>
+    <script src="./wired-elements.bundled.min.js"></script>
+
 </body>
 
 </html>

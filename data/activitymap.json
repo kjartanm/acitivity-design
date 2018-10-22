@@ -1,0 +1,50 @@
+{
+	"activity": [
+		{
+			"label": "Plan assignments",
+			"role": "teacher",
+			"intenttype": "want-to",
+			"activity_verbal": "plan assignments",
+			"motive": "the students get something to do",
+			"action": [
+				{
+					"intenttype": "need-to",
+					"action_verbal": "start the program",
+					"goal": "I can get access to tools",
+					"operation": [
+						{
+							"intenttype": "must",
+							"operation_verbal": "log on",
+							"condition": [
+								{
+									"conditionttype": "given",
+									"criteria": "I have an account"
+								},
+								{
+									"conditionttype": "when",
+									"criteria": "I go to log in"
+								},
+								{
+									"conditionttype": "and",
+									"criteria": "fill in user name in user name-field"
+								},
+								{
+									"conditionttype": "and",
+									"criteria": "fill in password in password field"
+								},
+								{
+									"conditionttype": "and",
+									"criteria": "click submit"
+								},
+								{
+									"conditionttype": "then",
+									"criteria": "I should be redirected to dashboard"
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
