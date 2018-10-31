@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const slugify = require('slugify');
 
 const featureDirPath = process.argv.pop();
 const acitityFilePath = process.argv.pop();
@@ -10,7 +11,7 @@ const activityData = JSON.parse(fs.readFileSync(acitityFilePath, { encoding: 'ut
 
 activityData.activity.map((activity, activityIdx) => {
     activity.action.map((action, actionIdx) => {
-        const targetPath = path.join(featureDirPath, 'action-' + activityIdx + '-' + actionIdx + '.feature');
+        const targetPath = path.join(featureDirPath, slugify(activity.activity_verbal) + '-' + slugify(action.action_verbal)  + '.feature');
         let feature = `
 Feature: ${action.action_verbal}
   As a/an ${activity.role}
@@ -27,7 +28,7 @@ Feature: ${action.action_verbal}
             });
         });
 
-        console.log("feature", feature);
+
         fs.writeFile(targetPath, feature, 'utf-8', (err, data) => console.log(err ? err : "success: " + targetPath));
     })
 })

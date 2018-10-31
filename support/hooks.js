@@ -1,22 +1,23 @@
 const { After, Before, AfterAll } = require('cucumber');
-const scope = require('./support/scope');
+const scope = require('./scope');
 
 Before(async () => {
   // You can clean up database models here
+  scope.browser = await scope.driver.launch({ headless: true, slowMo: 5 });
 });
 
 After(async () => {
   // Here we check if a scenario has instantiated a browser and a current page
-  if (scope.browser && scope.context.currentPage) {
+  if (scope.browser && scope.currentPage) {
     // if it has, find all the cookies, and delete them
-    const cookies = await scope.context.currentPage.cookies();
+    const cookies = await scope.currentPage.cookies();
     if (cookies && cookies.length > 0) {
-      await scope.context.currentPage.deleteCookie(...cookies);
+      await scope.currentPage.deleteCookie(...cookies);
     }
     // close the web page down
-    await scope.context.currentPage.close();
+    await scope.currentPage.close();
     // wipe the context's currentPage value
-    scope.context.currentPage = null;
+    scope.currentPage = null;
   }
 });
 

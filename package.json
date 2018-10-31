@@ -11,6 +11,7 @@
     "puppeteer": "^1.9.0"
   },
   "devDependencies": {
+    "chai": "^4.2.0",
     "cross-var": "^1.1.0",
     "cucumber": "^5.0.2",
     "rimraf": "^2.6.2",
@@ -22,7 +23,7 @@
     "activitydata": "./data/activitymap.json"
   },
   "scripts": {
-    "pretest": "cross-var node generate-test-files $npm_package_config_activitydata $npm_package_config_featuredir",
+    "setuptest": "cross-var node generate-test-files $npm_package_config_activitydata $npm_package_config_featuredir",
     "test": "npx cucumber-js $npm_package_config_featuredir --require $npm_package_config_supportdir --format snippets:test-result.txt"
   },
   "repository": {

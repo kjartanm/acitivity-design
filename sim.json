@@ -1,0 +1,75 @@
+{
+    "until": 28800,
+    "seed": 1234,
+    "version": "1.0",
+    "objects": [
+        {
+            "x": 489,
+            "y": 308,
+            "type": "sink",
+            "name": "sink_1",
+            "model": null
+        },
+        {
+            "x": 469,
+            "y": 232,
+            "type": "splitter",
+            "name": "splitter_2",
+            "out": [
+                "sink_1",
+                "queue_2"
+            ],
+            "model": {
+                "prob": "0.9"
+            }
+        },
+        {
+            "x": 266,
+            "y": 184,
+            "type": "splitter",
+            "name": "splitter_1",
+            "out": [
+                "queue_2",
+                "queue_1"
+            ],
+            "model": {
+                "prob": "0.9"
+            }
+        },
+        {
+            "x": 349,
+            "y": 180,
+            "type": "queue",
+            "name": "queue_2",
+            "out": "splitter_2",
+            "model": {
+                "nservers": 1,
+                "mu": "2",
+                "maxqlen": "-1"
+            }
+        },
+        {
+            "x": 161,
+            "y": 99,
+            "type": "queue",
+            "name": "queue_1",
+            "out": "splitter_1",
+            "model": {
+                "nservers": 1,
+                "mu": ".2",
+                "maxqlen": "-1"
+            }
+        },
+        {
+            "x": 99,
+            "y": 50,
+            "type": "source",
+            "name": "source_1",
+            "out": "queue_1",
+            "model": {
+                "lambda": "0.2"
+            }
+        }
+    ]
+}
+
