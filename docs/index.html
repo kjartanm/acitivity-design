@@ -117,13 +117,25 @@
             z-index: 1;
         }
 
-        .toolbar-radio{
+        .toolbar-radio {
             height: 2em;
             margin-left: var(--gap);
         }
 
         .toolbar-radio wired-radio {
             margin: 0;
+        }
+
+        .toolbar-right {
+            z-index: 100;
+            float: right;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: var(--gap);
+        }
+
+        .toolbar-label {
+            line-height: 3em;
         }
 
         .mv-bar {
@@ -190,7 +202,8 @@
             background-color: aliceblue;
         }
 
-        [mv-app][mv-mode="edit"] .mv-empty, [mv-app] [mv-mode="edit"] .mv-empty {
+        [mv-app][mv-mode="edit"] .mv-empty,
+        [mv-app] [mv-mode="edit"] .mv-empty {
             opacity: 1;
         }
 
@@ -291,30 +304,85 @@
         wired-radio {
             font-weight: bold;
             margin-top: var(--halfGap);
-            transform: scale(0.8,0.8);
+            transform: scale(0.8, 0.8);
         }
 
         .header-title {
-            font-size: 1.7em; 
-            font-weight: bold; 
+            font-size: 1.7em;
+            font-weight: bold;
             line-height: 1em;
         }
 
-        [selected='activities-only']~main .action{
+    /***/
+
+
+        .activity {
+            display: none;
+        }
+        .activity > .action {
             display: none;
         }
 
-        [selected='activities-only']~main .mv-add-action{
+        .activities > button.mv-add-activity {
             display: none;
         }
 
-        [selected='activities-and-actions']~main .operation{
+        .activity > button.mv-add-action {
             display: none;
         }
 
-        [selected='activities-and-actions']~main .mv-add-operation{
+
+        .activity:target{
+            display: grid;
+        }
+
+        .activity:target > .action {
+            display: grid;
+        }
+
+        .activity:target > button.mv-add-action {
+            display: inline-block;
+        }
+
+        .activity-show-all .activity {
+            display: grid;
+        }
+
+        .activity-show-all .activity > .action{
+            display: grid;
+        }
+
+        .activity-show-all .activities > button.mv-add-activity {
+            display: inline-block;
+        }
+
+        .activity-show-all .activity > button.mv-add-action {
+            display: inline-block;
+        }
+
+        .card:target ~ button.mv-add-action {
+            display: inline-block;
+        }
+
+        /***/
+
+        [selected='activities-only']~main .activity > .action {
             display: none;
         }
+
+        [selected='activities-only']~main .activity > .mv-add-action {
+            display: none;
+        }
+
+        [selected='activities-and-actions']~main .operation {
+            display: none;
+        }
+
+        [selected='activities-and-actions']~main .mv-add-operation {
+            display: none;
+        }
+
+    
     </style>
 </head>
 
@@ -362,19 +430,30 @@
             <wired-button class="toolbar-btn mv-export">export</wired-button>
         </wired-card>
     </header>
-    
+
     <wired-radio-group class="toolbar-radio" selected="all">
         Show
         <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="all" text="all"></wired-radio>
-        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-only" text="activities only"></wired-radio>
-        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-and-actions" text="activities and actions"></wired-radio>
+        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-only"
+            text="activities only"></wired-radio>
+        <wired-radio onclick="this.parentElement.setAttribute('selected', this.getAttribute('name'))" name="activities-and-actions"
+            text="activities and actions"></wired-radio>
     </wired-radio-group>
+
+    <wired-combo onclick="this.updated()" class="toolbar-combo toolbar-right activity-selector" selected="all" id="combo">
+        <wired-item value="all" text="All"></wired-item>
+        <wired-item property="activity-menu" value="activity-[$index + 1]" mv-value="label" mv-multiple mv-attribute="text"
+            text=""></wired-item>
+    </wired-combo>
+
+    <span class="toolbar-right toolbar-label">Select</span>
+
     <main>
         <div class="activities">
-            <div class="activity" property mv-multiple>
+            <div class="activity" property="activity" mv-multiple id="activity-[activityid]">
                 <meta property name="activityid" content="[$index + 1]">
                 <meta mv-mode="read" property name="format" content="As a/an {role} I {intenttype} {activity_verbal} so {motive}.">
-                <wired-card onclick="this.updated()" class="card card--activity">
+                <wired-card onclick="this.updated()" class="card card--activity" id="test-[activityid]">
                     <div class="card-index"><span class="card-role">[role]</span>Activity: [activityid]</div>
                     <div property="label" class="card-property-editor card-label"></div>
                     <div class="card-description">As a/an
@@ -391,7 +470,7 @@
                     <meta mv-mode="read" property name="format" content="As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}.">
                     <wired-card onclick="this.updated()" class="card card--action">
                         <div class="card-index"><span class="card-role">[role]</span>Action: [actionid]</div>
-                        <div class="card-description">As part of 
+                        <div class="card-description">As part of
                             "<span>[activity_verbal]</span>", I
                             <span class="card-property-editor card-property-editor--enum" property="intenttype" mv-edit="#action-intenttypes"></span>
                             <span class="card-property-editor" property="action_verbal"></span> so/to
@@ -404,16 +483,18 @@
                         <meta mv-mode="read" property name="format" content="In order to '{action_verbal}' I {intenttype} {operation_verbal}.">
                         <wired-card onclick="this.updated()" class="card card--operation">
                             <div class="card-index"><span class="card-role">[role]</span>Operation: [operationid]</div>
-                            <div class="card-description">In order to 
+                            <div class="card-description">In order to
                                 "<span>[action_verbal]</span>", I
-                                <span class="card-property-editor card-property-editor--enum" property="intenttype" mv-edit="#operation-intenttypes"></span>
+                                <span class="card-property-editor card-property-editor--enum" property="intenttype"
+                                    mv-edit="#operation-intenttypes"></span>
                                 <span class="card-property-editor" property="operation_verbal"></span>
                                 .
                             </div>
                             <wired-radio text="Show testable conditions"></wired-radio>
                             <div class="conditions">
                                 <div property class="condition" mv-multiple>
-                                    <span class="card-property-editor card-property-editor--enum" property="conditionttype" mv-edit="#operation-conditiontypes"></span>
+                                    <span class="card-property-editor card-property-editor--enum" property="conditionttype"
+                                        mv-edit="#operation-conditiontypes"></span>
                                     <span class="card-property-editor" property="criteria"></span>
                                 </div>
                             </div>
@@ -424,7 +505,26 @@
         </div>
     </main>
     <script src="./wired-elements.bundled.min.js"></script>
+    <script>
+        const combo = document.getElementById('combo');
 
+        combo.addEventListener('selected', () => {
+            document.body.classList.toggle("activity-show-all", combo.selected === 'all');
+            location.hash = '#' + combo.selected;
+        });
+
+        window.onhashchange = event => {
+            const resource = location.hash.slice(1);
+            if(resource !== combo.selected){
+                combo.selected = resource;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            location.hash = '#all';
+            document.body.classList.toggle("activity-show-all", true);
+        });
+    </script>
 </body>
 
 </html>
