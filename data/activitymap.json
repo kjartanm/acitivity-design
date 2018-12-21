@@ -40,11 +40,31 @@
 									"conditionttype": "then",
 									"criteria": "I should be redirected to dashboard"
 								}
+							],
+							"format": "In order to '{action_verbal}' I {intenttype} {operation_verbal}."
+						}
+					],
+					"format": "As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}."
+				},
+				{
+					"format": "As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}.",
+					"intenttype": "need-to",
+					"action_verbal": "do something",
+					"goal": "be better at my job",
+					"operation": [
+						{
+							"format": "In order to '{action_verbal}' I {intenttype} {operation_verbal}.",
+							"intenttype": "must",
+							"condition": [
+								{
+									"conditionttype": "given"
+								}
 							]
 						}
 					]
 				}
-			]
+			],
+			"format": "As a/an {role} I {intenttype} {activity_verbal} so {motive}."
 		}
 	]
 }
