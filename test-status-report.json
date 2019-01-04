@@ -1,0 +1,122 @@
+[
+  {
+    "description": "  As a/an teacher\n  I need-to start the program\n  so that I can get access to tools",
+    "keyword": "Feature",
+    "name": "start the program",
+    "line": 2,
+    "id": "start-the-program",
+    "tags": [],
+    "uri": "features/plan-assignments-start-the-program.feature",
+    "elements": [
+      {
+        "id": "start-the-program;must-log-on",
+        "keyword": "Scenario",
+        "line": 7,
+        "name": "must log on",
+        "tags": [],
+        "type": "scenario",
+        "steps": [
+          {
+            "keyword": "Before",
+            "hidden": true,
+            "match": {
+              "location": "support/hooks.js:4"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 730000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Given ",
+            "line": 8,
+            "name": "I have an account",
+            "match": {
+              "location": "support/steps.js:6"
+            },
+            "result": {
+              "status": "passed"
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "When ",
+            "line": 9,
+            "name": "I go to log in",
+            "match": {
+              "location": "support/steps.js:12"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 3951000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 10,
+            "name": "fill in user name in user name-field",
+            "match": {
+              "location": "support/steps.js:19"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 187000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 11,
+            "name": "fill in password in password field",
+            "match": {
+              "location": "support/steps.js:25"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 232000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "And ",
+            "line": 12,
+            "name": "click submit",
+            "match": {
+              "location": "support/steps.js:31"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2769000000
+            }
+          },
+          {
+            "arguments": [],
+            "keyword": "Then ",
+            "line": 13,
+            "name": "I should be redirected to dashboard",
+            "match": {
+              "location": "support/steps.js:41"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 2000000
+            }
+          },
+          {
+            "keyword": "After",
+            "hidden": true,
+            "match": {
+              "location": "support/hooks.js:9"
+            },
+            "result": {
+              "status": "passed",
+              "duration": 42000000
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

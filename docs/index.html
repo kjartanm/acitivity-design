@@ -62,8 +62,7 @@
                         "format": "As part of '{activity_verbal}', I {intenttype} {action_verbal} so/to {goal}."
                     }
                 ],
-                "format": "As a/an {role} I {intenttype} {activity_verbal} so {motive}.",
-                "test": "As a/an {role} I {intenttype} fdf {activity_verbal} so {motive}."
+                "format": "As a/an {role} I {intenttype} {activity_verbal} so {motive}."
             }
         ]
     }</script>
@@ -141,6 +140,10 @@
         .mv-bar {
             display: block;
             padding: var(--gap);
+        }
+
+        .mv-status {
+            display: none;
         }
 
         [mv-mode='edit'] .mv-edit {
@@ -390,7 +393,7 @@
     </style>
 </head>
 
-<body mv-app="ActivityMap" mv-storage="#initSource">
+<body mv-app="ActivityMap" mv-storage="#initSource" mv-xxx-storage="https://github.com/kjartanm/activity-design/blob/master/data/activitymap.json">
     <div hidden>
         <select id="roles">
             <option value="student">student</option>
@@ -429,6 +432,8 @@
     <header>
         <wired-card class="mv-bar">
             <span class="header-title">Prototype of Activity Mapping</span>
+            <wired-button class="toolbar-btn mv-login">login</wired-button>
+            <wired-button class="toolbar-btn mv-logout">logout</wired-button>
             <wired-button class="toolbar-btn mv-edit">edit</wired-button>
             <wired-button class="toolbar-btn mv-save">save</wired-button>
             <wired-button class="toolbar-btn mv-export">export</wired-button>
@@ -524,7 +529,7 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function (event) {
+        document.addEventListener("DOMContentLoaded", event => {
             location.hash = '#all';
             document.body.classList.toggle("activity-show-all", true);
         });
