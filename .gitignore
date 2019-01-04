@@ -2,5 +2,8 @@ node_modules
 .vscode 
 test
 images
+<<<<<<< HEAD
 support2
 
+=======
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064

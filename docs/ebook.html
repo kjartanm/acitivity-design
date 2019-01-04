@@ -109,7 +109,10 @@
 
     .card-label {
         font-weight: bold;
+<<<<<<< HEAD
         font-size: 1.1em;
+=======
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
     }
 
     [mv-mode='edit'] .card-property-editor {
@@ -128,6 +131,7 @@
         break-before: never;
     }
 
+<<<<<<< HEAD
     .card-show-all {
         display: block;
         float: right;
@@ -140,6 +144,8 @@
         display: block;
     }*/
 
+=======
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
     .chapters {
         display: grid;
         grid-template-columns: repeat(auto-fill, var(--cardWidth));
@@ -186,8 +192,13 @@
     .chapter-details {
         display: flex;
         width: 100%;
+<<<<<<< HEAD
         border: 0px solid yellow;
         height: calc(2 * var(--cardHeight));
+=======
+        height: 100%;
+        border: 0px solid yellow;
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
     }
 
     .chapter-summary {
@@ -202,6 +213,7 @@
         padding: var(--halfGap);
     }
 
+<<<<<<< HEAD
     .chapter-editor wired-card {
         height: 100%;
         width: 100%;
@@ -215,6 +227,8 @@
         overflow-y: scroll;
     }
 
+=======
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
     .chapter--expanded .card--summary {
         background-color: rgba(63, 127, 191, 0.2);
     }
@@ -245,10 +259,13 @@
         font-weight: bold;
         line-height: 1em;
     }
+<<<<<<< HEAD
 
     .mv-item-bar.mv-ui {
         bottom: calc(100% - 14px);
     }
+=======
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
 </style>
 <script>
     var currentSelectedChapterIndex = -1;
@@ -278,15 +295,22 @@
         <div class="chapters">
             <div class="chapter chapter-[$index + 1]" property mv-multiple>
                 <wired-card onclick="this.updated()" class="card card--chapter card--summary">
+<<<<<<< HEAD
                     <wired-radio data-chapter-index="[$index + 1]" onclick="onClickExpandChapter(this.getAttribute('data-chapter-index'), this.getAttribute('aria-checked') == '1', this)"
                         name="card-edit" text="show all" class="card-show-all"></wired-radio>
                     <div>Chapter [$index + 1]</div>
+=======
+                    <div>Kapittel [$index + 1]</div>
+                    <wired-radio data-chapter-index="[$index + 1]" onclick="onClickExpandChapter(this.getAttribute('data-chapter-index'), this.getAttribute('aria-checked') == '1', this)"
+                        name="card-edit" text="Edit"></wired-radio>
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
                     <div class="card-label">[title]</div>
                     <div class="card-description">[description]</div>
                 </wired-card>
                 <wired-card onclick="this.updated()" class="card card--chapter card--main">
                     <div class="chapter-details">
                         <div class="chapter-summary">
+<<<<<<< HEAD
                             <div>Show/edit Chapter [$index + 1]</div>
                             <h3>Title</h3>
                             <div property="title" class="card-property-editor card-label"></div>
@@ -299,6 +323,15 @@
 
                             </div>
                         </wired-card>
+=======
+                            <div>Rediger kapittel [$index + 1]</div>
+                            <br>
+                            <div property="title" class="card-property-editor card-label"></div>
+                            <div property="description" class="card-description"></div>
+                        </div>
+                        <div property="content" class="chapter-editor markdown">
+
+>>>>>>> 5b54042266e107cad1a14af0e7d63552a1daf064
                         </div>
                     </div>
                 </wired-card>
